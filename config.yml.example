@@ -1,0 +1,13 @@
+team_a:
+  - name: "TeamA Board 1"
+    id: "board_id_1"
+  - name: "TeamA Board 2"
+    id: "board_id_2"
+  - name: "TeamA Board 3"
+    id: "board_id_3"
+
+team_b:
+  - name: "TeamB Board 1"
+    id: "board_id_4"
+  - name: "TeamB Board 2"
+    id: "board_id_5"

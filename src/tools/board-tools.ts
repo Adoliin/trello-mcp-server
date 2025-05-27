@@ -1,6 +1,6 @@
 /**
  * Board Tools
- * 
+ *
  * Defines the tools for interacting with Trello boards.
  * Each tool includes a name, description, and input schema.
  */

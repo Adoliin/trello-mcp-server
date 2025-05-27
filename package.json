@@ -33,9 +33,11 @@
     "dependencies": {
         "@modelcontextprotocol/sdk": "0.6.0",
         "axios": "^1.6.7",
-        "dotenv": "^16.4.1"
+        "dotenv": "^16.4.1",
+        "js-yaml": "^4.1.0"
     },
     "devDependencies": {
+        "@types/js-yaml": "^4.0.9",
         "@types/node": "^20.11.16",
         "typescript": "^5.3.3"
     },

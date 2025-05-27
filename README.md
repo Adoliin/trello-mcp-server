@@ -202,6 +202,33 @@ Required environment variables:
 - `TRELLO_API_KEY` - Your Trello API key
 - `TRELLO_TOKEN` - Your Trello API token
 
+Optional environment variables:
+- `TRELLO_ALLOWED_BOARD_IDS` - Comma-separated list of board IDs to restrict access to
+
+## Board Access Control
+
+You can restrict the MCP server to only access specific Trello boards by setting the `TRELLO_ALLOWED_BOARD_IDS` environment variable. This is useful for limiting the scope of the server to only work with certain boards.
+
+To use this feature:
+
+1. Identify the board IDs you want to allow access to
+2. Set the `TRELLO_ALLOWED_BOARD_IDS` environment variable to a comma-separated list of these IDs:
+   ```
+   TRELLO_ALLOWED_BOARD_IDS=board123,board456,board789
+   ```
+3. Alternatively, use the command line argument:
+   ```bash
+   npm start -- --env TRELLO_ALLOWED_BOARD_IDS=board123,board456,board789
+   ```
+
+When this feature is enabled:
+- The server will **deny operations** on boards not in the allowed list
+- Access attempts to unauthorized boards will return an error message
+- Cards and lists are checked based on the board they belong to
+- Debugging can be enabled by setting `DEBUG=true` to see detailed logs of unauthorized access attempts
+
+If no board IDs are specified, the server will allow access to all boards.
+
 ## Error Handling
 
 The server includes comprehensive error handling:
@@ -210,6 +237,7 @@ The server includes comprehensive error handling:
 - Tool-level error handling with proper error messages
 - MCP protocol error handling
 - Trello API error handling
+- Board access control logging
 
 ## License
 

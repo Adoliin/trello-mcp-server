@@ -1,11 +1,13 @@
 /**
  * List Tool Handlers
- * 
+ *
  * Implements the handlers for list-related tools.
  * Each handler corresponds to a tool defined in list-tools.ts.
  */
 
 import { ServiceFactory } from '../services/service-factory.js';
+import { checkListAccess } from '../utils/card-access-control.js';
+import { checkBoardAccess } from '../utils/board-access-control.js';
 
 /**
  * Handlers for list-related tools
@@ -18,6 +20,10 @@ export const listToolHandlers = {
      */
     get_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'get_list');
+
         return listService.getList(args.listId);
     },
 
@@ -28,6 +34,10 @@ export const listToolHandlers = {
      */
     create_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the board is allowed (throws if not)
+        await checkBoardAccess(args.idBoard, 'create_list');
+
         return listService.createList(args);
     },
 
@@ -39,6 +49,10 @@ export const listToolHandlers = {
     update_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
         const { listId, ...updateData } = args;
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(listId, 'update_list');
+
         return listService.updateList(listId, updateData);
     },
 
@@ -49,6 +63,10 @@ export const listToolHandlers = {
      */
     archive_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'archive_list');
+
         return listService.archiveList(args.listId);
     },
 
@@ -59,6 +77,10 @@ export const listToolHandlers = {
      */
     unarchive_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'unarchive_list');
+
         return listService.unarchiveList(args.listId);
     },
 
@@ -69,6 +91,13 @@ export const listToolHandlers = {
      */
     move_list_to_board: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'move_list_to_board');
+
+        // Check if the target board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'move_list_to_board (target board)');
+
         return listService.moveListToBoard(args.listId, args.boardId);
     },
 
@@ -79,6 +108,10 @@ export const listToolHandlers = {
      */
     get_cards_in_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'get_cards_in_list');
+
         return listService.getCards(args.listId, args.filter);
     },
 
@@ -89,6 +122,10 @@ export const listToolHandlers = {
      */
     archive_all_cards: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'archive_all_cards');
+
         await listService.archiveAllCards(args.listId);
         return { success: true, message: 'All cards in the list have been archived' };
     },
@@ -100,6 +137,18 @@ export const listToolHandlers = {
      */
     move_all_cards: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the source list is allowed (throws if not)
+        await checkListAccess(args.sourceListId, 'move_all_cards (source)');
+
+        // Check if the destination list is allowed (throws if not)
+        await checkListAccess(args.destinationListId, 'move_all_cards (destination)');
+
+        // Check if the board is allowed (if provided) (throws if not)
+        if (args.boardId) {
+            await checkBoardAccess(args.boardId, 'move_all_cards (target board)');
+        }
+
         await listService.moveAllCards(args.sourceListId, args.destinationListId, args.boardId);
         return { success: true, message: 'All cards have been moved to the destination list' };
     },
@@ -111,6 +160,10 @@ export const listToolHandlers = {
      */
     update_list_position: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'update_list_position');
+
         return listService.updatePosition(args.listId, args.position);
     },
 
@@ -121,6 +174,10 @@ export const listToolHandlers = {
      */
     update_list_name: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'update_list_name');
+
         return listService.updateName(args.listId, args.name);
     },
 
@@ -131,6 +188,10 @@ export const listToolHandlers = {
      */
     subscribe_to_list: async (args: any) => {
         const listService = ServiceFactory.getInstance().getListService();
+
+        // Check if the list is allowed (throws if not)
+        await checkListAccess(args.listId, 'subscribe_to_list');
+
         return listService.updateSubscribed(args.listId, args.subscribed);
     }
 };

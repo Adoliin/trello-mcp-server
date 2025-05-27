@@ -1,11 +1,12 @@
 /**
  * Board Tool Handlers
- * 
+ *
  * Implements the handlers for board-related tools.
  * Each handler corresponds to a tool defined in board-tools.ts.
  */
 
 import { ServiceFactory } from '../services/service-factory.js';
+import { checkBoardAccess } from '../utils/board-access-control.js';
 
 /**
  * Handlers for board-related tools
@@ -28,6 +29,10 @@ export const boardToolHandlers = {
      */
     get_board: async (args: any) => {
         const boardService = ServiceFactory.getInstance().getBoardService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'get_board');
+
         return boardService.getBoard(args.boardId);
     },
 
@@ -49,6 +54,10 @@ export const boardToolHandlers = {
     update_board: async (args: any) => {
         const boardService = ServiceFactory.getInstance().getBoardService();
         const { boardId, ...updateData } = args;
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(boardId, 'update_board');
+
         return boardService.updateBoard(boardId, updateData);
     },
 
@@ -63,6 +72,10 @@ export const boardToolHandlers = {
         }
 
         const boardService = ServiceFactory.getInstance().getBoardService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'delete_board');
+
         await boardService.deleteBoard(args.boardId);
         return { success: true, message: 'Board deleted successfully' };
     },
@@ -74,6 +87,10 @@ export const boardToolHandlers = {
      */
     get_board_lists: async (args: any) => {
         const boardService = ServiceFactory.getInstance().getBoardService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'get_board_lists');
+
         return boardService.getLists(args.boardId, args.filter);
     },
 
@@ -84,6 +101,10 @@ export const boardToolHandlers = {
      */
     get_board_members: async (args: any) => {
         const memberService = ServiceFactory.getInstance().getMemberService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'get_board_members');
+
         return memberService.getBoardMembers(args.boardId);
     },
 
@@ -94,6 +115,10 @@ export const boardToolHandlers = {
      */
     get_board_labels: async (args: any) => {
         const labelService = ServiceFactory.getInstance().getLabelService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'get_board_labels');
+
         return labelService.getBoardLabels(args.boardId);
     },
 
@@ -104,6 +129,10 @@ export const boardToolHandlers = {
      */
     close_board: async (args: any) => {
         const boardService = ServiceFactory.getInstance().getBoardService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'close_board');
+
         return boardService.updateBoard(args.boardId, { closed: true });
     },
 
@@ -114,6 +143,10 @@ export const boardToolHandlers = {
      */
     reopen_board: async (args: any) => {
         const boardService = ServiceFactory.getInstance().getBoardService();
+
+        // Check if board is allowed (throws if not)
+        await checkBoardAccess(args.boardId, 'reopen_board');
+
         return boardService.updateBoard(args.boardId, { closed: false });
     }
 };
